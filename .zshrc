@@ -170,7 +170,7 @@ setprompt() {
   setopt prompt_subst
 
   if [[ -n "$SSH_CLIENT"  ||  -n "$SSH2_CLIENT" ]]; then 
-    p_host="FG[001]%M%f"
+    p_host="$FG[001]%M%f"
   else
     p_host="$FG[025]%M%f"
   fi
