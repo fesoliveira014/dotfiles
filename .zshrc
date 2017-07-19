@@ -1,8 +1,9 @@
-#------------------------------------------------------------------#
-# File:     .zshrc   ZSH resource file                             #
-# Version:  0.1.16                                                 #
-# Author:   Øyvind "Mr.Elendig" Heggstad <mrelendig@har-ikkje.net> #
-#------------------------------------------------------------------#
+#---------------------------------------------------------------------------------#
+# File:     .zshrc   ZSH resource file                                            #
+# Version:  0.1.16                                                                #
+# Author:   Felipe Santos Oliveira                                                #
+# Adapted from: https://github.com/MrElendig/dotfiles-alice/blob/master/.zshrc    #
+#---------------------------------------------------------------------------------#
 
 #-----------------------------
 # Source some stuff
