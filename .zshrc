@@ -118,14 +118,14 @@ case $TERM in
   termite|terminator|*xterm*|rxvt|rxvt-unicode|rxvt-256color|rxvt-unicode-256color|(dt|k|E)term)
     precmd () {
       vcs_info
-      print -Pn "\e]0;[%n@%M][%~]%#\a"
+      print -Pn "\e]0;[%n@%M][%~]$\a"
     } 
-    preexec () { print -Pn "\e]0;[%n@%M][%~]%# ($1)\a" }
+    preexec () { print -Pn "\e]0;[%n@%M][%~]$ ($1)\a" }
     ;;
   screen|screen-256color)
     precmd () { 
       vcs_info
-      print -Pn "\e]83;title \"$1\"\a" 
+      print -Pn "\e]83;title \"$1\"\a" w
       print -Pn "\e]0;$TERM - (%L) [%n@%M]%# [%~]\a" 
     }
     preexec () { 
@@ -187,6 +187,7 @@ setprompt() {
     %F{cyan}][%f
     ${p_dir}
     %F{cyan}]%f
+    "\n"
     %(!.%F{red}%#%f.%F{green}$%f)
     " "
   '}}
@@ -198,3 +199,11 @@ setprompt
 
 
 # vim: set ts=2 sw=2 et:
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+source ~/.rvm/scripts/rvm
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/fsoliveira/.sdkman"
+[[ -s "/home/fsoliveira/.sdkman/bin/sdkman-init.sh" ]] && source "/home/fsoliveira/.sdkman/bin/sdkman-init.sh"

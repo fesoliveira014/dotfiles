@@ -1,0 +1,185 @@
+2017-09-29 16:41:31	--	irc: connecting to server chat.freenode.net/6667...
+2017-09-29 16:41:31	--	irc: connected to chat.freenode.net/6667 (162.213.39.42)
+2017-09-29 16:41:31	=!=	irc: sending data to server: error 104 Connection reset by peer
+2017-09-29 16:41:31	=!=	irc: reading data on socket: error 104 (connection closed by peer)
+2017-09-29 16:41:31	--	irc: disconnecting from server...
+2017-09-29 16:41:31	--	irc: disconnected from server
+2017-09-29 16:41:31	--	irc: reconnecting to server in 10 seconds
+2017-09-29 16:41:41	--	irc: reconnecting to server...
+2017-09-29 16:41:41	--	irc: connecting to server chat.freenode.net/6667...
+2017-09-29 16:41:41	--	irc: connected to chat.freenode.net/6667 (162.213.39.42)
+2017-09-29 16:41:41	=!=	irc: sending data to server: error 104 Connection reset by peer
+2017-09-29 16:41:41	=!=	irc: reading data on socket: error 104 (connection closed by peer)
+2017-09-29 16:41:41	--	irc: disconnecting from server...
+2017-09-29 16:41:41	--	irc: disconnected from server
+2017-09-29 16:41:41	--	irc: reconnecting to server in 20 seconds
+2017-09-29 16:42:01	--	irc: reconnecting to server...
+2017-09-29 16:42:01	--	irc: connecting to server chat.freenode.net/6667...
+2017-09-29 16:42:01	--	irc: connected to chat.freenode.net/6667 (71.11.84.232)
+2017-09-29 16:42:01	=!=	irc: sending data to server: error 104 Connection reset by peer
+2017-09-29 16:42:01	=!=	irc: reading data on socket: error 104 (connection closed by peer)
+2017-09-29 16:42:01	--	irc: disconnecting from server...
+2017-09-29 16:42:01	--	irc: disconnected from server
+2017-09-29 16:42:01	--	irc: reconnecting to server in 40 seconds
+2017-09-29 16:42:41	--	irc: reconnecting to server...
+2017-09-29 16:42:41	--	irc: connecting to server chat.freenode.net/6667...
+2017-09-29 16:42:41	--	irc: connected to chat.freenode.net/6667 (162.213.39.42)
+2017-09-29 16:42:41	=!=	irc: sending data to server: error 104 Connection reset by peer
+2017-09-29 16:42:41	=!=	irc: reading data on socket: error 104 (connection closed by peer)
+2017-09-29 16:42:41	--	irc: disconnecting from server...
+2017-09-29 16:42:41	--	irc: disconnected from server
+2017-09-29 16:42:41	--	irc: reconnecting to server in 1 minute, 20 seconds
+2017-09-29 16:43:33		irc: auto-reconnection is cancelled
+2017-09-29 16:43:33	--	irc: disconnected from server
+2017-09-29 16:45:31	--	irc: connecting to server chat.freenode.net/6667...
+2017-09-29 16:45:31	--	irc: connected to chat.freenode.net/6667 (162.213.39.42)
+2017-09-29 16:45:31	=!=	irc: sending data to server: error 104 Connection reset by peer
+2017-09-29 16:45:31	=!=	irc: sending data to server: error 32 Broken pipe
+2017-09-29 16:45:31	=!=	irc: reading data on socket: error 32 (connection closed by peer)
+2017-09-29 16:45:31	--	irc: disconnecting from server...
+2017-09-29 16:45:31	--	irc: disconnected from server
+2017-09-29 16:45:31	--	irc: reconnecting to server in 10 seconds
+2017-09-29 16:45:41	--	irc: reconnecting to server...
+2017-09-29 16:45:41	--	irc: connecting to server chat.freenode.net/6667...
+2017-09-29 16:45:41	--	irc: connected to chat.freenode.net/6667 (162.213.39.42)
+2017-09-29 16:45:41	=!=	irc: sending data to server: error 104 Connection reset by peer
+2017-09-29 16:45:41	=!=	irc: sending data to server: error 32 Broken pipe
+2017-09-29 16:45:41	=!=	irc: reading data on socket: error 32 (connection closed by peer)
+2017-09-29 16:45:41	--	irc: disconnecting from server...
+2017-09-29 16:45:41	--	irc: disconnected from server
+2017-09-29 16:45:41	--	irc: reconnecting to server in 20 seconds
+2017-09-29 16:45:59		irc: auto-reconnection is cancelled
+2017-09-29 16:45:59	--	irc: disconnected from server
+2017-09-29 16:47:22	--	irc: connecting to server chat.freenode.net/6697...
+2017-09-29 16:47:24	--	irc: connected to chat.freenode.net/6697 (185.30.166.37)
+2017-09-29 16:47:24	=!=	irc: reading data on socket: error 104 Connection reset by peer
+2017-09-29 16:47:24	--	irc: disconnecting from server...
+2017-09-29 16:47:24	--	irc: disconnected from server
+2017-09-29 16:47:24	--	irc: reconnecting to server in 10 seconds
+2017-09-29 16:47:34	--	irc: reconnecting to server...
+2017-09-29 16:47:34	--	irc: connecting to server chat.freenode.net/6697...
+2017-09-29 16:47:34	--	irc: connected to chat.freenode.net/6697 (82.96.96.11)
+2017-09-29 16:47:35	=!=	irc: reading data on socket: error 104 Connection reset by peer
+2017-09-29 16:47:35	--	irc: disconnecting from server...
+2017-09-29 16:47:35	--	irc: disconnected from server
+2017-09-29 16:47:35	--	irc: reconnecting to server in 20 seconds
+2017-09-29 16:47:53		irc: auto-reconnection is cancelled
+2017-09-29 16:47:53	--	irc: disconnected from server
+2017-09-29 16:50:48	--	irc: connecting to server chat.freenode.net/6697...
+2017-09-29 16:50:49	--	irc: connected to chat.freenode.net/6697 (185.30.166.37)
+2017-09-29 16:50:49	=!=	irc: reading data on socket: error 104 Connection reset by peer
+2017-09-29 16:50:49	--	irc: disconnecting from server...
+2017-09-29 16:50:49	--	irc: disconnected from server
+2017-09-29 16:50:49	--	irc: reconnecting to server in 10 seconds
+2017-09-29 16:50:59	--	irc: reconnecting to server...
+2017-09-29 16:50:59	--	irc: connecting to server chat.freenode.net/6697...
+2017-09-29 16:50:59	--	irc: connected to chat.freenode.net/6697 (71.11.84.232)
+2017-09-29 16:51:00	=!=	irc: reading data on socket: error 104 Connection reset by peer
+2017-09-29 16:51:00	--	irc: disconnecting from server...
+2017-09-29 16:51:00	--	irc: disconnected from server
+2017-09-29 16:51:00	--	irc: reconnecting to server in 20 seconds
+2017-09-29 16:51:04		irc: auto-reconnection is cancelled
+2017-09-29 16:51:04	--	irc: disconnected from server
+2017-09-29 16:52:20	--	irc: connecting to server chat.freenode.net/6697...
+2017-09-29 16:52:21	--	irc: connected to chat.freenode.net/6697 (185.30.166.37)
+2017-09-29 16:52:21	=!=	irc: reading data on socket: error 104 Connection reset by peer
+2017-09-29 16:52:21	--	irc: disconnecting from server...
+2017-09-29 16:52:21	--	irc: disconnected from server
+2017-09-29 16:52:21	--	irc: reconnecting to server in 10 seconds
+2017-09-29 16:52:25		irc: auto-reconnection is cancelled
+2017-09-29 16:52:25	--	irc: disconnected from server
+2017-09-29 16:55:23	--	irc: connecting to server chat.freenode.net/6697 (SSL)...
+2017-09-29 16:55:24	--	gnutls: connected using 2048-bit Diffie-Hellman shared secret exchange
+2017-09-29 16:55:24	--	gnutls: receiving 2 certificates
+2017-09-29 16:55:24	--	 - certificate[1] info:
+2017-09-29 16:55:24	--	   - subject `CN=kornbluth.freenode.net', issuer `C=US,O=Let's Encrypt,CN=Let's Encrypt Authority X3', RSA key 4096 bits, signed using RSA-SHA256, activated `2017-08-21 14:06:00 UTC', expires `2017-11-19 14:06:00 UTC', SHA-1 fingerprint `21bd7db5d954cdd750210f7632315e09bb89996a'
+2017-09-29 16:55:24	--	 - certificate[2] info:
+2017-09-29 16:55:24	--	   - subject `C=US,O=Let's Encrypt,CN=Let's Encrypt Authority X3', issuer `O=Digital Signature Trust Co.,CN=DST Root CA X3', RSA key 2048 bits, signed using RSA-SHA256, activated `2016-03-17 16:40:46 UTC', expires `2021-03-17 16:40:46 UTC', SHA-1 fingerprint `e6a3b45b062d509b3382282d196efe97d5956ccb'
+2017-09-29 16:55:24	--	gnutls: peer's certificate is trusted
+2017-09-29 16:55:25	--	irc: connected to chat.freenode.net/6697 (82.96.96.11)
+2017-09-29 16:55:25	--	kornbluth.freenode.net: *** Looking up your hostname...
+2017-09-29 16:55:25	--	kornbluth.freenode.net: *** Checking Ident
+2017-09-29 16:55:25	--	kornbluth.freenode.net: *** Couldn't look up your hostname
+2017-09-29 16:55:25	--	kornbluth.freenode.net: *** No Ident response
+2017-09-29 16:55:25	--	irc: client capability, server supports: account-notify extended-join identify-msg multi-prefix sasl
+2017-09-29 16:55:25	--	irc: client capability, requesting: sasl
+2017-09-29 16:55:26	--	*: slndr :Nick/channel is temporarily unavailable
+2017-09-29 16:55:26	=!=	irc: nickname "slndr" is unavailable, trying nickname "slenderman011"
+2017-09-29 16:55:26	--	irc: client capability, enabled: sasl
+2017-09-29 16:55:27	--	You are now logged in as slenderman011. (slenderman011!slndr@186.201.114.214)
+2017-09-29 16:55:27	--	SASL authentication successful
+2017-09-29 16:55:28	--	Welcome to the freenode Internet Relay Chat Network slenderman011
+2017-09-29 16:55:28	--	MSG(nickserv): identify ***********
+2017-09-29 16:55:28	--	Your host is kornbluth.freenode.net[82.96.96.11/6697], running version ircd-seven-1.1.4
+2017-09-29 16:55:28	--	This server was created Sat Feb 11 2017 at 18:38:04 UTC
+2017-09-29 16:55:28	--	kornbluth.freenode.net ircd-seven-1.1.4 DOQRSZaghilopswz CFILMPQSbcefgijklmnopqrstvz bkloveqjfI
+2017-09-29 16:55:28	--	CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFLMPQScgimnprstz CHANLIMIT=#:120 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=freenode STATUSMSG=@+ CALLERID=g CASEMAPPING=rfc1459 :are supported by this server
+2017-09-29 16:55:28	--	CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 DEAF=D FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: EXTBAN=$,ajrxz CLIENTVER=3.0 SAFELIST ELIST=CTU CPRIVMSG :are supported by this server
+2017-09-29 16:55:28	--	CNOTICE KNOCK WHOX ETRACE :are supported by this server
+2017-09-29 16:55:28	--	There are 123 users and 88175 invisible on 31 servers
+2017-09-29 16:55:28	--	31 :IRC Operators online
+2017-09-29 16:55:28	--	45 :unknown connection(s)
+2017-09-29 16:55:28	--	54432 :channels formed
+2017-09-29 16:55:28	--	I have 4931 clients and 1 servers
+2017-09-29 16:55:28	--	4931 5631 :Current local users 4931, max 5631
+2017-09-29 16:55:28	--	88298 94852 :Current global users 88298, max 94852
+2017-09-29 16:55:28	--	Highest connection count: 5632 (5631 clients) (99940 connections received)
+2017-09-29 16:55:28	--	- kornbluth.freenode.net Message of the Day -
+2017-09-29 16:55:28	--	- Welcome to kornbluth.freenode.net in Frankfurt, DE, EU.
+2017-09-29 16:55:28	--	- Thanks to Probe Networks (www.probe-networks.de) for
+2017-09-29 16:55:28	--	- sponsoring this server!
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- KORNBLUTH, CYRIL M. [1923-1958].  Born in New York City and
+2017-09-29 16:55:28	--	- an active member of the Futurians, Cyril Kornbluth sold his
+2017-09-29 16:55:28	--	- first story professionally at age 15.  By the 1940's his
+2017-09-29 16:55:28	--	- stories appeared widely under several pennames, including
+2017-09-29 16:55:28	--	- S.D. Gottesman and Cecil Corman.  He left his university
+2017-09-29 16:55:28	--	- studies in Chicago to serve in the Army in Europe during
+2017-09-29 16:55:28	--	- WWII, then returned to school and work in Chicago until he
+2017-09-29 16:55:28	--	- began writing full-time in 1951.  The author of The Marching
+2017-09-29 16:55:28	--	- Morons and the novels The Space Merchants (with Frederik
+2017-09-29 16:55:28	--	- Pohl) and The Syndic, he's best known for his biting social
+2017-09-29 16:55:28	--	- satire and his collaborations with Pohl and with Judith
+2017-09-29 16:55:28	--	- Merril.
+2017-09-29 16:55:28	--	-   __                               _          _  _   _     _____     _______
+2017-09-29 16:55:28	--	-  / _|_ __ ___  ___ _ __   ___   __| | ___   _| || |_| |   |_ _\ \   / / ____|
+2017-09-29 16:55:28	--	- | |_| '__/ _ \/ _ \ '_ \ / _ \ / _` |/ _ \ |_  ..  _| |    | | \ \ / /|  _|
+2017-09-29 16:55:28	--	- |  _| | |  __/  __/ | | | (_) | (_| |  __/ |_      _| |___ | |  \ V / | |___
+2017-09-29 16:55:28	--	- |_| |_|  \___|\___|_| |_|\___/ \__,_|\___|   |_||_| |_____|___|  \_/  |_____|
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- October 28th - 29th, Bristol, United Kingdom - see http://freenode.live/
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- freenode #live is a community-focused live event designed to build and
+2017-09-29 16:55:28	--	- strengthen relationships between Free and Open Source Software (FOSS)
+2017-09-29 16:55:28	--	- developers and users. freenode live seeks to raise awareness of and
+2017-09-29 16:55:28	--	- promote FOSS alternatives to proprietary software.
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- Facilitating face-to-face interaction, creative workshops, talks and think
+2017-09-29 16:55:28	--	- tanks, freenode #live will bring developers and users together in a nurturing
+2017-09-29 16:55:28	--	- and dynamic environment stimulating the free exchange of ideas and
+2017-09-29 16:55:28	--	- information while fostering cross-project collaboration and dialogue for
+2017-09-29 16:55:28	--	- innovation.
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- Please join us in the #live channel on the freenode network, or send us an
+2017-09-29 16:55:28	--	- e-mail (2017-team@freenode.live) if you have any questions and would like to
+2017-09-29 16:55:28	--	- get involved, and see https://freenode.live/ for more information and to get
+2017-09-29 16:55:28	--	- your tickets!
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- A massive thank you to our sponsors and exibitors:
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- Private Internet Access, Canonical, Bytemark, yubico, Open Rights Group,
+2017-09-29 16:55:28	--	- Free Software Foundation, OpenSUSE, Minetest, KDE, bitcoin.com.
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	-
+2017-09-29 16:55:28	--	- By connecting to freenode you indicate that you have read and agree with
+2017-09-29 16:55:28	--	- our policies and guidelines as published on https://freenode.net
+2017-09-29 16:55:28	--	End of /MOTD command.
+2017-09-29 16:55:28	--	User mode [+Zi] by slenderman011
+2017-09-29 16:55:34	--	NickServ (NickServ@services.): You are already logged in as slenderman011.
+2017-09-29 16:55:39	--	slndr: Nick/channel is temporarily unavailable
+2017-09-29 16:56:07	--	slndr: Nick/channel is temporarily unavailable
+2017-09-29 16:56:09	--	slndr: Nick/channel is temporarily unavailable
+2017-09-29 16:56:11	--	slndr: Nick/channel is temporarily unavailable
+2017-09-29 16:56:13	--	slndr: Nick/channel is temporarily unavailable
+2017-09-29 16:56:15	--	slndr: Nick/channel is temporarily unavailable
+2017-09-29 17:02:37	--	irc: disconnected from server
