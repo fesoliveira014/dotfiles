@@ -128,6 +128,9 @@ bindsym Mod4+Shift+8 move container to workspace 8
 bindsym Mod4+Shift+9 move container to workspace 9
 bindsym Mod4+Shift+0 move container to workspace 10
 
+bindsym Mod4+Tab workspace next
+bindsym Mod4+Shift+Tab workspace prev
+
 # reload the configuration file
 bindsym Mod4+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -172,19 +175,29 @@ bar {
         tray_output primary
 }
 
+# Volume control
+bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
+bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
+bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle 
+
 # Lock screen
-bindsym Mod4+Control+l exec i3lock -c 000000
+bindsym Mod4+Control+l exec i3lock -c 111111 -e -f
+exec --no-startup-id xautolock -time 4 -locker "i3lock -c 111111 -e -f" -detectsleep
 
 # Set keyboard layout during startup
 exec_always --no-startup-id setxkbmap -layout us -variant intl
-exec_always --no-startup-id synergy
 exec_always --no-startup-id xrdb -merge ~/.Xresources
+
+bindsym Print exec scrot $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
+bindsym Mod4+Print exec scrot -u $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
+bindsym --release Mod4+Shift+Print exec scrot -s $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
 
 # Automatically start these clients on their respective workspaces
 exec --no-startup-id i3-msg 'workspace 1; exec firefox;'
 exec --no-startup-id i3-msg 'workspace 2; exec i3-sensible-terminal; workspace 1'
 exec --no-startup-id i3-msg 'workspace 3; exec code; workspace 1'
 exec --no-startup-id i3-msg 'workspace 4; exec thunderbird; workspace 1'
+exec --no-startup-id i3-msg 'workspace 5; exec synergy; workspace1'
 
 # Export system variables
 #exec --no-startup-id export TERMINAL="urxvt"
