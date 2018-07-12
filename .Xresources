@@ -2,17 +2,26 @@
 URxvt*buffered: true
 URxvt*cursorBlink: true
 URxvt*underlineColor: yellow
-URxvt*font:  xft:inconsolata:size=10:antialias=true
+URxvt*font: xft:inconsolata:size=10:antialias=true
 URxvt*depth: 32
 URxvt*borderless: 1
 URxvt*scrollBar: false
 URxvt*loginShell: true
-Urxvt*secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
+URxvt*scrollWithBuffer: true
+URxvt*secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
 URxvt*saveLines: 5000
 URxvt*termName: rxvt-unicode
-URxvt.perl-ext-common: default,matcher,tabbed,resize-font
+URxvt.perl-lib: /usr/lib/urxvt/perl/
+URxvt.perl-ext-common: default,matcher,tabbed,font-size
 URxvt.urlLauncher: firefox
 URxvt.matcher.button: 1
+
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
+URxvt.keysym.C-S-Up:   perl:font-size:incglobal
+URxvt.keysym.C-S-Down: perl:font-size:decglobal
+URxvt.keysym.C-equal:  perl:font-size:reset
+URxvt.keysym.C-slash:  perl:font-size:show
 
 !! drop in Solarized colorscheme for Xresources/Xdefaults
 

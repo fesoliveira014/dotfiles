@@ -1,9 +1,8 @@
-#---------------------------------------------------------------------------------#
-# File:     .zshrc   ZSH resource file                                            #
-# Version:  0.1.16                                                                #
-# Author:   Felipe Santos Oliveira                                                #
-# Adapted from: https://github.com/MrElendig/dotfiles-alice/blob/master/.zshrc    #
-#---------------------------------------------------------------------------------#
+#------------------------------------------------------------------#
+# File:     .zshrc   ZSH resource file                             #
+# Version:  0.1.16                                                 #
+# Author:   Øyvind "Mr.Elendig" Heggstad <mrelendig@har-ikkje.net> #
+#------------------------------------------------------------------#
 
 #-----------------------------
 # Source some stuff
@@ -59,7 +58,9 @@ alias ls="ls --color -F"
 alias ll="ls --color -lh"
 alias la="ls --color -la"
 alias sa="sudo apt"
+alias sau2="sa update; sa upgrade"
 alias cls="clear"
+eval $(thefuck --alias)
 #alias gr="gvim --remote-silent"
 #alias vr="vim --remote-silent"
 
