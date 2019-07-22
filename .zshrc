@@ -1,3 +1,4 @@
+#t
 #------------------------------------------------------------------#
 # File:     .zshrc   ZSH resource file                             #
 # Version:  0.1.16                                                 #
@@ -60,6 +61,8 @@ alias la="ls --color -la"
 alias sa="sudo apt"
 alias sau2="sa update; sa upgrade"
 alias cls="clear"
+alias gccarm='/home/fsoliveira/gccarm/bin/clang -fPIE'
+alias g++arm='/home/fsoliveira/gccarm/bin/clang++ -fPIE'
 eval $(thefuck --alias)
 #alias gr="gvim --remote-silent"
 #alias vr="vim --remote-silent"
@@ -201,9 +204,18 @@ setprompt
 
 # vim: set ts=2 sw=2 et:
 
+# disables middle mouse button paste
+xinput set-button-map 8 1 0 3 4 5 6 7
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 source ~/.rvm/scripts/rvm
+
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
+
+
+export BROWSER=/usr/bin/chromium-browser
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/fsoliveira/.sdkman"
