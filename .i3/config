@@ -171,14 +171,19 @@ bar {
                 background #111111
         }
 
-        status_command i3status
-        tray_output primary
+        status_command i3blocks
+        # tray_output primary
 }
 
 # Volume control
-bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
-bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
-bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle 
+# bindsym XF86AudioRaiseVolume exec amixer -q sset   'Master' 5%+ unmute
+# bindsym XF86AudioLowerVolume exec amixer -q sset   'Master' 5%- 
+# bindsym XF86AudioMute exec amixer -q -D pulse sset 'Master' toggle 
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+
+exec_always --no-startup-id nm-applet #--sm-disable
 
 # Lock screen
 bindsym Mod4+Control+l exec i3lock -c 111111 -e -f
@@ -189,15 +194,15 @@ exec_always --no-startup-id setxkbmap -layout us -variant intl
 exec_always --no-startup-id xrdb -merge ~/.Xresources
 
 bindsym Print exec scrot $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
-bindsym Mod4+Print exec scrot -u $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
+bindsym Mod4+Print exec scrot -u $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.pngAlso note that you need to have a proper ConsoleKit
 bindsym --release Mod4+Shift+Print exec scrot -s $HOME/Pictures/`date +%Y-%m-%d_%H:%M:%S`.png
 
 # Automatically start these clients on their respective workspaces
-exec --no-startup-id i3-msg 'workspace 1; exec firefox;'
-exec --no-startup-id i3-msg 'workspace 2; exec i3-sensible-terminal; workspace 1'
-exec --no-startup-id i3-msg 'workspace 3; exec code; workspace 1'
-exec --no-startup-id i3-msg 'workspace 4; exec thunderbird; workspace 1'
-exec --no-startup-id i3-msg 'workspace 5; exec synergy; workspace1'
+exec --no-startup-id i3-msg 'workspace 1; exec google-chrome; workspace 1;'
+exec --no-startup-id i3-msg 'workspace 2; exec i3-sensible-terminal; workspace 1;'
+exec --no-startup-id i3-msg 'workspace 3; exec code; workspace 1;'
+exec --no-startup-id i3-msg 'workspace 4; exec thunderbird; workspace 1;'
+exec --no-startup-id i3-msg 'workspace 5; exec synergy; workspace1;'
 
 # Export system variables
 #exec --no-startup-id export TERMINAL="urxvt"
