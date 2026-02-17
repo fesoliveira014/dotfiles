@@ -111,4 +111,5 @@ export NVM_DIR="$HOME/.nvm"
 
 export PATH="$HOME/opt/odin:$PATH"
 export PATH="$PATH:$HOME/opt/nvim-linux/bin"
-
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$HOME/opt/c3"
