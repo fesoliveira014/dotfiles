@@ -113,3 +113,9 @@ export PATH="$HOME/opt/odin:$PATH"
 export PATH="$PATH:$HOME/opt/nvim-linux/bin"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$HOME/opt/c3"
+
+export ENV_FILE="$HOME/.env"
+if ls -d $ENV_FILE > /dev/null; then
+  source $ENV_FILE
+fi
+
