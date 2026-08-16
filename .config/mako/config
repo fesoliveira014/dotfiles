@@ -1,0 +1,46 @@
+# mako, themed to match the rest of the desktop (ayu-dark, as used by waybar,
+# swaybg and niri's focus ring).
+
+font=Hack Nerd Font Mono 10
+background-color=#0D1017F0
+text-color=#BFBDB6
+border-color=#232834
+border-size=2
+border-radius=6
+padding=10,14
+margin=8
+
+# 1600 logical pixels wide: a notification much past a third of that starts
+# covering the window it is telling you about.
+width=420
+height=160
+max-visible=4
+default-timeout=6000
+ignore-timeout=0
+
+anchor=top-right
+layer=overlay
+
+# Progress bar for the volume/brightness OSD, which sends int:value hints.
+progress-color=over #E6B450
+
+[urgency=low]
+text-color=#8A9199
+default-timeout=4000
+
+[urgency=critical]
+border-color=#F07178
+text-color=#F07178
+default-timeout=0
+
+# The OSD replaces itself in place rather than stacking one bubble per keypress.
+# ~/.local/bin/osd tags its notifications with this synchronous hint.
+[app-name=osd]
+default-timeout=1500
+history=0
+group-by=summary
+
+# Toggled from waybar. Notifications are still recorded, so `makoctl restore`
+# brings back anything that arrived while this was on.
+[mode=do-not-disturb]
+invisible=1

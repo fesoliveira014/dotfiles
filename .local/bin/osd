@@ -1,0 +1,102 @@
+#!/bin/sh
+# On-screen display for volume and brightness, drawn through mako.
+#
+# swayosd is the usual answer here, but it is not packaged for noble and is a
+# GTK build from source. mako is already running and already renders progress
+# bars from the `value` hint, so this costs nothing extra.
+#
+# Notifications carry a synchronous hint so mako replaces the previous one in
+# place instead of stacking a new bubble per keypress.
+#
+# usage: osd volume up|down|mute
+#        osd mic mute
+#        osd brightness up|down
+
+set -eu
+
+SINK='@DEFAULT_AUDIO_SINK@'
+SOURCE='@DEFAULT_AUDIO_SOURCE@'
+STEP_VOLUME=0.05
+STEP_BRIGHTNESS=5
+
+notify() {
+    # $1 tag (mako replaces same-tagged notifications), $2 icon, $3 title, $4 value 0-100
+    notify-send -a osd -u low \
+        -h "string:x-canonical-private-synchronous:$1" \
+        -h "int:value:$4" \
+        -i "$2" "$3"
+}
+
+volume_now() {
+    # "Volume: 0.70" or "Volume: 0.70 [MUTED]"
+    wpctl get-volume "$SINK" | awk '{ printf "%d", $2 * 100 }'
+}
+
+muted() {
+    wpctl get-volume "$SINK" | grep -q MUTED
+}
+
+brightness_now() {
+    # brightnessctl -m: "device,class,current,percent%,max"
+    brightnessctl -m --class=backlight | cut -d, -f4 | tr -d '%'
+}
+
+case "${1:-}" in
+volume)
+    case "${2:-}" in
+    up) wpctl set-volume -l 1.0 "$SINK" "${STEP_VOLUME}+" ;;
+    down) wpctl set-volume "$SINK" "${STEP_VOLUME}-" ;;
+    mute) wpctl set-mute "$SINK" toggle ;;
+    *)
+        echo "usage: osd volume up|down|mute" >&2
+        exit 2
+        ;;
+    esac
+
+    if muted; then
+        notify volume audio-volume-muted "Volume muted" 0
+    else
+        v=$(volume_now)
+        notify volume audio-volume-high "Volume ${v}%" "$v"
+    fi
+    ;;
+
+mic)
+    wpctl set-mute "$SOURCE" toggle
+    if wpctl get-volume "$SOURCE" | grep -q MUTED; then
+        notify mic microphone-sensitivity-muted "Microphone muted" 0
+    else
+        notify mic audio-input-microphone "Microphone live" 100
+    fi
+    ;;
+
+brightness)
+    case "${2:-}" in
+    up) step="${STEP_BRIGHTNESS}%+" ;;
+    down) step="${STEP_BRIGHTNESS}%-" ;;
+    *)
+        echo "usage: osd brightness up|down" >&2
+        exit 2
+        ;;
+    esac
+
+    # /sys/class/backlight/*/brightness is root:video 664, so this only works
+    # for members of the video group. Say so out loud rather than failing
+    # silently, which is how the plain brightnessctl bindings used to behave.
+    if ! brightnessctl --class=backlight set "$step" >/dev/null 2>&1; then
+        notify-send -a osd -u critical -i dialog-error \
+            -h 'string:x-canonical-private-synchronous:brightness' \
+            'Brightness control unavailable' \
+            'Not a member of the "video" group. Run: sudo usermod -aG video $USER, then log out and back in.'
+        exit 1
+    fi
+
+    b=$(brightness_now)
+    notify brightness display-brightness "Brightness ${b}%" "$b"
+    ;;
+
+*)
+    echo "usage: osd volume|mic|brightness ..." >&2
+    exit 2
+    ;;
+esac

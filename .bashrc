@@ -117,3 +117,4 @@ if ! shopt -oq posix; then
 fi
 
 exec zsh
+. "$HOME/.cargo/env"

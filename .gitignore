@@ -1,0 +1,11 @@
+# Displaced files from install.sh
+backups/
+
+# Never commit credentials. `credential.helper = store` in .gitconfig writes
+# tokens here in plaintext.
+.git-credentials
+
+# Editor and tool leftovers
+*.bak
+*.swp
+*~

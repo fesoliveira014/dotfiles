@@ -1,0 +1,51 @@
+/* ayu-dark, matching the niri focus ring and the old Regolith bar */
+* {
+  font-family: "Hack Nerd Font Mono", monospace;
+  font-size: 12px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+}
+
+window#waybar {
+  background: #0D1017;
+  color: #BFBDB6;
+}
+
+#custom-workspaces { padding: 0 12px; }
+#custom-window     { padding: 0 10px; color: #757C87; }
+
+#clock             { padding: 0 12px; color: #ECE8DC; font-weight: bold; }
+
+#battery,
+#wireplumber,
+#backlight,
+#network           { padding: 0 10px; }
+
+#battery.warning   { color: #E6B450; }
+#battery.critical  { color: #F07178; }
+#battery.charging  { color: #AAD94C; }
+
+#network.disconnected { color: #F07178; }
+
+#tray              { padding: 0 8px; }
+
+/* Telemetry sits dimmer than the interactive modules: it is there to be
+   glanced at, not read, and only earns colour when something is wrong. */
+#cpu,
+#temperature       { padding: 0 8px; color: #8A9199; }
+
+#temperature.critical { color: #F07178; font-weight: bold; }
+
+#custom-powerprofile { padding: 0 8px; }
+/* performance draws attention because on battery it is usually a mistake. */
+#custom-powerprofile.performance { color: #E6B450; }
+#custom-powerprofile.balanced    { color: #8A9199; }
+#custom-powerprofile.power-saver { color: #AAD94C; }
+#custom-powerprofile.degraded    { color: #F07178; }
+
+#custom-dnd        { padding: 0 8px; color: #8A9199; }
+#custom-dnd.dnd-on { color: #E6B450; }
+
+#idle_inhibitor            { padding: 0 8px; color: #8A9199; }
+#idle_inhibitor.activated  { color: #E6B450; }

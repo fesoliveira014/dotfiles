@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Feed waybar a workspace indicator for niri.
+
+waybar 0.9.24 predates niri's module, so this bridges niri msg's event
+stream into waybar's custom-module JSON protocol. Re-queries on each
+event rather than parsing event payloads: simpler, and the query is cheap.
+"""
+import shutil
+import os
+import json, subprocess, sys
+
+# systemd's user PATH does not include ~/.local/bin, so waybar (spawned by
+# niri, which systemd started) cannot find "niri" by name. Resolve it here.
+NIRI_BIN = shutil.which("niri") or os.path.expanduser("~/.local/bin/niri")
+
+def emit():
+    try:
+        out = subprocess.run([NIRI_BIN, "msg", "-j", "workspaces"],
+                             capture_output=True, text=True, timeout=2).stdout
+        ws = sorted(json.loads(out), key=lambda w: (w.get("output") or "", w.get("idx") or 0))
+    except Exception:
+        return
+    parts, classes = [], "workspaces"
+    for w in ws:
+        label = w.get("name") or str(w.get("idx"))
+        if w.get("is_focused"):
+            parts.append(f"<span foreground='#E6B450'><b>{label}</b></span>")
+        elif w.get("is_urgent"):
+            parts.append(f"<span foreground='#F07178'>{label}</span>")
+        elif w.get("is_active"):
+            parts.append(f"<span foreground='#BFBDB6'>{label}</span>")
+        else:
+            parts.append(f"<span foreground='#4E5359'>{label}</span>")
+    try:
+        print(json.dumps({"text": "  ".join(parts), "class": classes}), flush=True)
+    except BrokenPipeError:
+        sys.exit(0)
+
+emit()
+try:
+    p = subprocess.Popen([NIRI_BIN, "msg", "-j", "event-stream"],
+                         stdout=subprocess.PIPE, text=True)
+    for line in p.stdout:
+        if any(k in line for k in ("Workspace", "WindowFocusChanged", "WindowOpened", "WindowClosed")):
+            emit()
+except (KeyboardInterrupt, BrokenPipeError):
+    sys.exit(0)

@@ -1,0 +1,55 @@
+#!/bin/sh
+# Switch the power profile to match whether the laptop is plugged in.
+#
+# power-profiles-daemon does not do this itself - it holds whichever profile it
+# was last given, which is how this machine ended up sitting on `performance`
+# while running off the battery.
+#
+# On AC     -> performance
+# On battery -> balanced   (not power-saver: too slow for building, and the
+#                           gain over balanced is small on Lunar Lake)
+
+set -eu
+
+AC_PROFILE=performance
+BATTERY_PROFILE=balanced
+
+# True when any mains or USB-C power source reports itself online. Checking
+# every supply matters here: this machine also charges over USB-C PD, which
+# shows up as ucsi-source-psy-* rather than as AC.
+on_external_power() {
+    for online in /sys/class/power_supply/*/online; do
+        [ -r "$online" ] || continue
+        [ "$(cat "$online")" = "1" ] && return 0
+    done
+    return 1
+}
+
+apply() {
+    if on_external_power; then
+        wanted=$AC_PROFILE
+    else
+        wanted=$BATTERY_PROFILE
+    fi
+
+    current=$(powerprofilesctl get 2>/dev/null || echo unknown)
+    [ "$current" = "$wanted" ] && return 0
+
+    if powerprofilesctl set "$wanted" 2>/dev/null; then
+        notify-send -a "Power" -u low -i battery \
+            "Power profile: $wanted" "Switched from $current"
+    fi
+}
+
+# Apply once at startup, so a session that begins on battery is corrected
+# immediately rather than waiting for the first plug event.
+apply
+
+# upower emits a line whenever any power device changes. The state is re-read
+# from sysfs rather than parsed out of that line, because the line format is
+# not a stable interface. The sleep debounces the burst of events that a
+# single plug or unplug produces.
+upower --monitor 2>/dev/null | while read -r _; do
+    sleep 1
+    apply
+done

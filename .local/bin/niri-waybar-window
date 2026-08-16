@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+"""Focused-window title for waybar, bridged from niri msg.
+
+waybar 0.9.24 has no niri/window module, so this feeds the same data
+through waybar's custom-module JSON protocol.
+"""
+import shutil
+import os
+import json
+import subprocess
+import sys
+import html
+
+# systemd's user PATH does not include ~/.local/bin, so waybar (spawned by
+# niri, which systemd started) cannot find "niri" by name. Resolve it here.
+NIRI_BIN = shutil.which("niri") or os.path.expanduser("~/.local/bin/niri")
+
+
+def emit():
+    try:
+        out = subprocess.run(
+            [NIRI_BIN, "msg", "-j", "focused-window"],
+            capture_output=True, text=True, timeout=2,
+        ).stdout.strip()
+        win = json.loads(out) if out and out != "null" else None
+    except Exception:
+        win = None
+
+    if not win:
+        payload = {"text": "", "tooltip": ""}
+    else:
+        title = (win.get("title") or "").strip()
+        app = (win.get("app_id") or "").strip()
+        text = title or app
+        if len(text) > 60:
+            text = text[:59] + "…"
+        payload = {"text": html.escape(text), "tooltip": html.escape(f"{app}: {title}")}
+
+    try:
+        print(json.dumps(payload), flush=True)
+    except BrokenPipeError:
+        sys.exit(0)
+
+
+def main():
+    emit()
+    proc = subprocess.Popen(
+        [NIRI_BIN, "msg", "-j", "event-stream"],
+        stdout=subprocess.PIPE, text=True,
+    )
+    watched = ("WindowFocusChanged", "WindowOpenedOrChanged",
+               "WindowClosed", "WorkspaceActivated")
+    for line in proc.stdout:
+        if any(k in line for k in watched):
+            emit()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (KeyboardInterrupt, BrokenPipeError):
+        sys.exit(0)

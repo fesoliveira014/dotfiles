@@ -1,2 +1,7 @@
-*dpi: 120
-Xft.dpi: 120
+! 168 = 96 x 1.75. On this 2880x1800 14-inch panel (~243 DPI) that renders a
+! 12pt glyph at 28 device px. Drives i3, i3bar and alacritty.
+! GTK apps get the same density from gsd-xsettings via
+! org.gnome.desktop.interface scaling-factor=2 x text-scaling-factor=0.875,
+! which also computes to 168 - so the two agree instead of fighting.
+*dpi: 168
+Xft.dpi: 168

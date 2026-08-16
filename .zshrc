@@ -71,7 +71,9 @@ ZSH_THEME="imp"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+# fast-syntax-highlighting must come last: it wraps ZLE, and anything loaded
+# after it can end up unhighlighted.
+plugins=(git zsh-autosuggestions zsh-completions fast-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 source $VULKAN_DIR/setup-env.sh
@@ -119,3 +121,72 @@ if ls -d $ENV_FILE > /dev/null; then
   source $ENV_FILE
 fi
 
+export GOPATH="$HOME/go"
+export PATH="$HOME/.local/bin:$PATH"
+
+# ─────────────────────────────────────────────────────────────────────
+# TUI stack. Every line is guarded, so this block is a no-op for
+# anything not installed yet.
+# ─────────────────────────────────────────────────────────────────────
+
+# go install puts binaries here (bluetuith, golangci-lint)
+export PATH="$HOME/go/bin:$PATH"
+
+# Ubuntu ships these under different names to avoid collisions
+command -v batcat >/dev/null && alias bat='batcat'
+command -v fdfind >/dev/null && alias fd='fdfind'
+
+# eza. Remove the `ls` line if you'd rather keep coreutils ls.
+if command -v eza >/dev/null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza -lh --icons --git --group-directories-first'
+  alias la='eza -lha --icons --git --group-directories-first'
+  alias lt='eza --tree --level=2 --icons'
+fi
+
+# fzf keybindings (Ctrl-T files, Alt-C cd, Ctrl-R history)
+[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && \
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+[ -f /usr/share/doc/fzf/examples/completion.zsh ] && \
+  source /usr/share/doc/fzf/examples/completion.zsh
+
+# zoxide: `z foo` jumps to the best-matching directory you've visited
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+
+# yazi: `y` opens the file manager, and cd's to wherever you exited
+if command -v yazi >/dev/null; then
+  function y() {
+    local cwd
+    cwd="$(mktemp -t yazi-cwd.XXXXXX)"
+    yazi "$@" --cwd-file="$cwd"
+    if [ -f "$cwd" ]; then
+      local dir
+      dir="$(cat -- "$cwd")"
+      [ -n "$dir" ] && [ "$dir" != "$PWD" ] && builtin cd -- "$dir"
+    fi
+    rm -f -- "$cwd"
+  }
+fi
+
+# atuin: Ctrl-R searchable history. Loaded last so it wins over fzf's
+# Ctrl-R binding. Up-arrow is left alone deliberately.
+command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
+
+# zsh-autosuggestions: inline grey completion from history, accepted with the
+# right arrow or End. This is the shell counterpart to minuet in nvim, and it
+# complements atuin rather than duplicating it - atuin is a search you invoke,
+# this is a suggestion that is simply already there.
+#
+# 'completion' is appended to the strategy so that a command with no history
+# still suggests from the completion system.
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# Do not try to suggest against enormous pasted buffers.
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=40
+# Ctrl-Space accepts, for when the arrow keys are too far away.
+bindkey '^ ' autosuggest-accept
+
+# fastfetch replaces neofetch, which upstream archived and no longer maintains.
+command -v fastfetch >/dev/null && alias neofetch='fastfetch'
+
+# glow renders markdown; jless is an interactive viewer for JSON that jq pipes.
+command -v glow >/dev/null && alias md='glow -p'

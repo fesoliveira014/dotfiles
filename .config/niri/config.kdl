@@ -1,0 +1,155 @@
+// niri config -- migrated from Regolith/i3
+// KDL format. "/-" comments out the following node.
+
+input {
+    keyboard {
+        numlock
+    }
+    touchpad {
+        tap
+        natural-scroll
+        dwt
+        scroll-method "two-finger"
+    }
+    // Keyboard-first, like i3
+    /-focus-follows-mouse
+}
+
+output "eDP-1" {
+    mode "2880x1800@120.000"
+    // 1.8 -> 1600x1000 logical, both whole numbers.
+    // 1.75 is rejected: 2880/1.75 = 1645.71 is not a whole pixel count.
+    // Next roomier clean stop is 1.6 -> 1800x1125.
+    scale 1.8
+    variable-refresh-rate
+}
+
+layout {
+    gaps 6
+    center-focused-column "on-overflow"
+
+    // Mod+R cycles these. The essential control on a 14-inch screen.
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 2
+        active-color "#E6B450"    // ayu-dark gold, carried from Regolith
+        inactive-color "#232834"
+    }
+    border {
+        off
+    }
+}
+
+prefer-no-csd
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+spawn-at-startup "waybar"
+spawn-at-startup "mako"
+spawn-at-startup "swaybg" "-c" "#0D1017"
+
+// Clipboard history. wl-paste watches the selection and hands each entry to
+// cliphist's database; Mod+C reads it back through fuzzel. Text and images are
+// separate watchers because wl-paste subscribes to one MIME class at a time.
+spawn-sh-at-startup "wl-paste --type text --watch /home/fesoliveira/go/bin/cliphist store"
+spawn-sh-at-startup "wl-paste --type image --watch /home/fesoliveira/go/bin/cliphist store"
+
+// Night colour temperature, for Edmonton (53.5N, -113.5W). wlsunset computes
+// sunrise and sunset from the coordinates rather than fixed clock times, which
+// matters this far north where they move by hours across the year.
+spawn-at-startup "/home/fesoliveira/.local/bin/wlsunset" "-l" "53.5" "-L" "-113.5" "-t" "3500" "-T" "6500"
+spawn-at-startup "swayidle" "-w" \
+    "timeout" "600" "swaylock -f -c 0D1017" \
+    "before-sleep" "swaylock -f -c 0D1017"
+
+// Float things that are really dialogs -- the command-line complaint,
+// answered declaratively. Mod+V floats anything else on demand.
+window-rule {
+    match app-id=r#"^(pavucontrol|nm-connection-editor|blueman-manager)$"#
+    match app-id=r#"^org\.gnome\.(Nautilus|Calculator)$"#
+    open-floating true
+    default-column-width { proportion 0.45; }
+}
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+Return hotkey-overlay-title="Terminal" { spawn "/home/fesoliveira/.local/bin/alacritty"; }
+    Mod+D      hotkey-overlay-title="Launcher" { spawn "fuzzel"; }
+    Mod+C      hotkey-overlay-title="Clipboard history" { spawn-sh "/home/fesoliveira/go/bin/cliphist list | fuzzel --dmenu | /home/fesoliveira/go/bin/cliphist decode | wl-copy"; }
+    Mod+Q      repeat=false { close-window; }
+    Mod+Shift+E { quit; }
+    Mod+Escape { spawn "swaylock" "-f" "-c" "0D1017"; }
+
+    // hjkl, exactly as in i3
+    Mod+H { focus-column-left; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    Mod+L { focus-column-right; }
+
+    Mod+Shift+H { move-column-left; }
+    Mod+Shift+J { move-window-down; }
+    Mod+Shift+K { move-window-up; }
+    Mod+Shift+L { move-column-right; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+
+    Mod+Ctrl+1 { move-column-to-workspace 1; }
+    Mod+Ctrl+2 { move-column-to-workspace 2; }
+    Mod+Ctrl+3 { move-column-to-workspace 3; }
+    Mod+Ctrl+4 { move-column-to-workspace 4; }
+    Mod+Ctrl+5 { move-column-to-workspace 5; }
+
+    // The three that matter on a small screen
+    Mod+R       { switch-preset-column-width; }
+    Mod+W       { toggle-column-tabbed-display; }
+    Mod+O repeat=false { toggle-overview; }
+
+    Mod+F       { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+V       { toggle-window-floating; }
+    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+Ctrl+F  { expand-column-to-available-width; }
+
+    Mod+Comma  { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+
+    // Touchpad and mouse scrolling through columns
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollLeft  { focus-column-left; }
+    Mod+WheelScrollDown  cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp    cooldown-ms=150 { focus-workspace-up; }
+
+    Print      { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print  { screenshot-window; }
+
+    // These route through ~/.local/bin/osd, which performs the change and then
+    // draws the level through mako. swayosd is the usual answer but is neither
+    // packaged for noble nor worth a GTK source build for a progress bar.
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "/home/fesoliveira/.local/bin/osd" "volume" "up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "/home/fesoliveira/.local/bin/osd" "volume" "down"; }
+    XF86AudioMute        allow-when-locked=true { spawn "/home/fesoliveira/.local/bin/osd" "volume" "mute"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "/home/fesoliveira/.local/bin/osd" "mic" "mute"; }
+
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "/home/fesoliveira/.local/bin/osd" "brightness" "up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "/home/fesoliveira/.local/bin/osd" "brightness" "down"; }
+
+    XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioNext { spawn "playerctl" "next"; }
+    XF86AudioPrev { spawn "playerctl" "previous"; }
+}

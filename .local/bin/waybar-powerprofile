@@ -1,0 +1,50 @@
+#!/bin/sh
+# waybar custom module for power-profiles-daemon.
+#
+# waybar 0.9.24 has no built-in power-profiles-daemon module - it reports
+# "Unknown module" - so this emits the JSON protocol directly.
+#
+# With no argument it prints the current state once. With "next" it advances to
+# the following profile, which is what the module's on-click runs.
+#
+# Note that power-profile-watch.service also sets the profile on AC/battery
+# transitions, so a manual choice here holds only until the next plug event.
+
+set -eu
+
+profile_icon() {
+    case "$1" in
+    performance) printf '󰓅' ;;
+    balanced) printf '󰾅' ;;
+    power-saver) printf '󰌪' ;;
+    *) printf '󰈐' ;;
+    esac
+}
+
+if [ "${1:-}" = "next" ]; then
+    current=$(powerprofilesctl get 2>/dev/null || echo balanced)
+    case "$current" in
+    performance) next=balanced ;;
+    balanced) next=power-saver ;;
+    *) next=performance ;;
+    esac
+    powerprofilesctl set "$next" 2>/dev/null || true
+    exit 0
+fi
+
+profile=$(powerprofilesctl get 2>/dev/null || echo unknown)
+icon=$(profile_icon "$profile")
+
+# Degraded means firmware is throttling regardless of the chosen profile,
+# usually thermal. Worth surfacing rather than showing a misleading icon.
+degraded=$(powerprofilesctl list 2>/dev/null | awk '/^\* /{f=1} f && /Degraded:/{print $2; exit}')
+
+if [ -n "${degraded:-}" ] && [ "$degraded" != "no" ]; then
+    class=degraded
+    tooltip="Power profile: $profile (degraded: $degraded)"
+else
+    class=$profile
+    tooltip="Power profile: $profile"
+fi
+
+printf '{"text":"%s","tooltip":"%s","class":"%s"}\n' "$icon" "$tooltip" "$class"

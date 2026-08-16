@@ -1,0 +1,29 @@
+#!/bin/sh
+# waybar custom module: mako's do-not-disturb mode.
+#
+# No argument prints the current state as waybar JSON; "toggle" flips it, which
+# is what the module's on-click runs.
+#
+# The suppressed notifications are still recorded - `makoctl restore` replays
+# whatever arrived while do-not-disturb was on.
+
+set -eu
+
+dnd_active() {
+    makoctl mode 2>/dev/null | grep -qx 'do-not-disturb'
+}
+
+if [ "${1:-}" = "toggle" ]; then
+    if dnd_active; then
+        makoctl mode -r do-not-disturb >/dev/null 2>&1 || true
+    else
+        makoctl mode -a do-not-disturb >/dev/null 2>&1 || true
+    fi
+    exit 0
+fi
+
+if dnd_active; then
+    printf '{"text":"󰂛","tooltip":"Do not disturb: on","class":"dnd-on"}\n'
+else
+    printf '{"text":"󰂚","tooltip":"Do not disturb: off","class":"dnd-off"}\n'
+fi

@@ -1,0 +1,106 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 26,
+  "spacing": 0,
+
+  "modules-left":   ["custom/workspaces", "custom/window"],
+  "modules-center": ["clock"],
+  "modules-right":  ["cpu", "temperature", "custom/powerprofile", "custom/dnd",
+                     "idle_inhibitor", "tray", "backlight", "wireplumber",
+                     "network", "battery"],
+
+  // niri has no waybar module in 0.9.24 -- bridged via niri msg
+  "custom/workspaces": {
+    "exec": "/home/fesoliveira/.local/bin/niri-waybar-workspaces",
+    "return-type": "json",
+    "restart-interval": 5
+  },
+
+  "custom/window": {
+    "exec": "/home/fesoliveira/.local/bin/niri-waybar-window",
+    "return-type": "json",
+    "restart-interval": 5
+  },
+
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+
+  "battery": {
+    "states": { "warning": 25, "critical": 10 },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-icons": ["󰁺","󰁼","󰁾","󰂀","󰁹"],
+    "tooltip-format": "{timeTo}"
+  },
+
+  "wireplumber": {
+    "format": "󰕾 {volume}%",
+    "format-muted": "󰝟",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "max-volume": 100
+  },
+
+  "backlight": {
+    "format": "󰃞 {percent}%",
+    // Routed through the same script as the XF86 keys so scrolling here draws
+    // the OSD too, instead of changing the level silently.
+    "on-scroll-up": "/home/fesoliveira/.local/bin/osd brightness up",
+    "on-scroll-down": "/home/fesoliveira/.local/bin/osd brightness down"
+  },
+
+  "cpu": {
+    "interval": 5,
+    "format": "󰻠 {usage}%",
+    "tooltip": true,
+    "on-click": "/home/fesoliveira/.local/bin/alacritty -e btop"
+  },
+
+  // Lunar Lake throttles under sustained load; this is the package sensor.
+  // hwmon-path-abs points at the stable platform path rather than /sys/class,
+  // where the hwmonN index can change between boots.
+  "temperature": {
+    "interval": 5,
+    "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+    "input-filename": "temp1_input",
+    "critical-threshold": 85,
+    "format": " {temperatureC}°",
+    "format-critical": " {temperatureC}°",
+    "on-click": "/home/fesoliveira/.local/bin/alacritty -e btop"
+  },
+
+  // waybar 0.9.24 has no built-in power-profiles-daemon module.
+  "custom/powerprofile": {
+    "exec": "/home/fesoliveira/.local/bin/waybar-powerprofile",
+    "return-type": "json",
+    "interval": 5,
+    "on-click": "/home/fesoliveira/.local/bin/waybar-powerprofile next"
+  },
+
+  "custom/dnd": {
+    "exec": "/home/fesoliveira/.local/bin/waybar-dnd",
+    "return-type": "json",
+    "interval": 3,
+    "on-click": "/home/fesoliveira/.local/bin/waybar-dnd toggle",
+    "on-click-right": "makoctl restore"
+  },
+
+  // Blocks swayidle's 10-minute lock while it is on - for builds and video.
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": { "activated": "󰅶", "deactivated": "󰛊" },
+    "tooltip-format-activated": "Idle inhibited (screen will not lock)",
+    "tooltip-format-deactivated": "Idle not inhibited"
+  },
+
+  "network": {
+    "format-wifi": "󰖩 {signalStrength}%",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid}  ({ipaddr})"
+  },
+
+  "tray": { "spacing": 8 }
+}

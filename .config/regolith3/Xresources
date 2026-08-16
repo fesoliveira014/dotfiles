@@ -1,2 +1,12 @@
 !regolith.look.path: /usr/share/regolith-look/ayu
 regolith.look.path: /usr/share/regolith-look/ayu-dark
+
+! Mod+Enter launches alacritty 0.17.0 built from source, not the
+! apt 0.13.2 that /usr/bin/x-terminal-emulator resolves to.
+wm.program.terminal: /home/fesoliveira/.local/bin/alacritty
+
+! i3bar has no height setting - it sizes itself from the font. At 168 DPI
+! a 12pt glyph is 28px; 9pt is 21px, matching the bar height from before
+! the DPI change. Raise or lower these two together to resize the bar.
+wm.bar.font: Hack Nerd Font Mono 9
+i3xrocks.value.font: Hack Nerd Font Mono 9
