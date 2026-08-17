@@ -83,9 +83,13 @@ spawn-sh-at-startup "wl-paste --type image --watch /home/fesoliveira/go/bin/clip
 // sunrise and sunset from the coordinates rather than fixed clock times, which
 // matters this far north where they move by hours across the year.
 spawn-at-startup "/home/fesoliveira/.local/bin/wlsunset" "-l" "53.5" "-L" "-113.5" "-t" "3500" "-T" "6500"
+// hyprlock rather than swaylock: it queries fprintd over D-Bus directly, so it
+// can prompt for a finger and listen from the moment the screen locks.
+// swaylock could only reach the reader through PAM, which meant no prompt and
+// no scan until you pressed Enter. Config in ~/.config/hypr/hyprlock.conf.
 spawn-at-startup "swayidle" "-w" \
-    "timeout" "600" "swaylock -f -c 0D1017" \
-    "before-sleep" "swaylock -f -c 0D1017"
+    "timeout" "600" "/home/fesoliveira/.local/bin/hyprlock" \
+    "before-sleep" "/home/fesoliveira/.local/bin/hyprlock"
 
 // Float things that are really dialogs -- the command-line complaint,
 // answered declaratively. Mod+V floats anything else on demand.
@@ -104,7 +108,7 @@ binds {
     Mod+C      hotkey-overlay-title="Clipboard history" { spawn-sh "/home/fesoliveira/go/bin/cliphist list | fuzzel --dmenu | /home/fesoliveira/go/bin/cliphist decode | wl-copy"; }
     Mod+Q      repeat=false { close-window; }
     Mod+Shift+E { quit; }
-    Mod+Escape { spawn "swaylock" "-f" "-c" "0D1017"; }
+    Mod+Escape { spawn "/home/fesoliveira/.local/bin/hyprlock"; }
 
     // hjkl, exactly as in i3
     Mod+H { focus-column-left; }
