@@ -24,6 +24,25 @@ output "eDP-1" {
     variable-refresh-rate
 }
 
+// External 4K at scale 1.25 -> 3072x1728 logical.
+//
+// The global `layout` block below applies to every output, and the column
+// widths there are fractions rather than pixels. A "proportion 0.5" column is
+// 800px on the laptop but 1526px here, and two of those plus gaps come to
+// 3070.8 of 3072 - roughly one pixel of slack. A third column can never fit,
+// even partially, so with center-focused-column "on-overflow" every focus
+// change past two windows re-centres, leaving one column flanked by two
+// half-visible neighbours rather than a clean split.
+//
+// Layout can be overridden per output, so centring is off here while the
+// laptop keeps it: at 1600 logical a single column already fills the screen,
+// where centring looks identical to filling and costs nothing.
+output "DP-1" {
+    layout {
+        center-focused-column "never"
+    }
+}
+
 layout {
     gaps 6
     center-focused-column "on-overflow"
