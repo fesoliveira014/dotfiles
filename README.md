@@ -69,6 +69,30 @@ symlink hop.
 bridge script chains — one pair of `niri msg event-stream` subscriptions per
 bar. That is expected, not a leak.
 
+**hyprlock needs `/etc/pam.d/hyprlock`, and fails confusingly without it.**
+It does *not* fall through to `/etc/pam.d/other` — `Pam.cpp` hard-codes a
+fallback to **`/etc/pam.d/su`**, whose `pam_unix` then logs
+`conversation failed` and paints hyprlock's `$FAIL` text red on every unlock.
+Because that happens while you are scanning, it reads as a rejected
+fingerprint when it is really the password thread failing:
+
+```sh
+sudo tee /etc/pam.d/hyprlock >/dev/null <<'EOF'
+#%PAM-1.0
+auth include login
+EOF
+```
+
+Fingerprint itself never goes through PAM — hyprlock queries fprintd over
+D-Bus — so `auth:fingerprint:enabled` works with or without this file. Only
+the password path and the error text depend on it.
+
+**Fingerprint needs no libfprint work on this machine.** The Goodix `27c6:658c`
+is supported out of the box and the enrolments already exist; check with
+`fprintd-list "$USER"`. Note `fprintd-verify` with no `-f` tests only the
+*first* enrolled finger, so a rejection there means nothing unless you scanned
+that exact finger — use `fprintd-verify -f any` to test what hyprlock does.
+
 **waybar 0.9.24 has no niri modules and no `power-profiles-daemon` module.**
 Hence the four bridge scripts. On a newer waybar, delete
 `niri-waybar-workspaces` and `niri-waybar-window` and use the native
