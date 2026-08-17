@@ -55,6 +55,20 @@ absolute paths are used in `config.kdl` regardless, as a second line of defence.
 sudo usermod -aG video "$USER"   # then log out and back in
 ```
 
+**`.config/systemd/user/waybar.service` is a symlink to `/dev/null`, on
+purpose.** Ubuntu ships `/usr/lib/systemd/user/waybar.service` and enables it
+from `/etc/systemd/user/graphical-session.target.wants/`, which is system-owned
+and so cannot be removed with `systemctl --user disable`. Left alone it starts a
+second waybar alongside niri's `spawn-at-startup`, giving two stacked bars on
+every monitor. Masking it at user level is what keeps the session described in
+`config.kdl` alone. systemd honours the mask through `install.sh`'s extra
+symlink hop.
+
+**waybar draws one bar per output.** There is no `"output"` key in
+`config.jsonc`, so with two monitors connected you get two bars and *four*
+bridge script chains — one pair of `niri msg event-stream` subscriptions per
+bar. That is expected, not a leak.
+
 **waybar 0.9.24 has no niri modules and no `power-profiles-daemon` module.**
 Hence the four bridge scripts. On a newer waybar, delete
 `niri-waybar-workspaces` and `niri-waybar-window` and use the native
