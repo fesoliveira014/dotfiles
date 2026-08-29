@@ -22,30 +22,44 @@ output "eDP-1" {
     // Next roomier clean stop is 1.6 -> 1800x1125.
     scale 1.8
     variable-refresh-rate
-}
+    // Explicit positions, because the left edge of the leftmost output is now
+    // load-bearing: lan-mouse puts its capture barrier there and crossing it
+    // hands input to the Windows machine at 192.168.4.91. Leaving niri to
+    // auto-arrange put DP-1 at x=0, which would have aimed that barrier at the
+    // external monitor instead.
+    position x=0 y=0
 
-// External 4K at scale 1.25 -> 3072x1728 logical.
-//
-// The global `layout` block below applies to every output, and the column
-// widths there are fractions rather than pixels. A "proportion 0.5" column is
-// 800px on the laptop but 1526px here, and two of those plus gaps come to
-// 3070.8 of 3072 - roughly one pixel of slack. A third column can never fit,
-// even partially, so with center-focused-column "on-overflow" every focus
-// change past two windows re-centres, leaving one column flanked by two
-// half-visible neighbours rather than a clean split.
-//
-// Layout can be overridden per output, so centring is off here while the
-// laptop keeps it: at 1600 logical a single column already fills the screen,
-// where centring looks identical to filling and costs nothing.
-output "DP-1" {
+    // Centring is inverted relative to the global default below: it is useful
+    // here and harmful on a big external. At 1600 logical two half-width
+    // columns fit exactly, so on-overflow only kicks in once there are more
+    // columns than fit -- which is exactly when centring the focused one helps.
     layout {
-        center-focused-column "never"
+        center-focused-column "on-overflow"
     }
 }
 
+// No block for the external monitor, deliberately. It was scoped to "DP-1"
+// and silently stopped applying when the same screen came back as "HDMI-A-1"
+// -- the centring bug reappeared with the config untouched. Externals move
+// between connectors; eDP-1 never does. So the external behaviour is now the
+// global default and the laptop is the exception, which is connector-proof.
+//
+// Why centring is wrong on the external: column widths are fractions, so
+// "proportion 0.5" is 800px on the laptop but 1526px on a 3072-wide output.
+// Two of those plus gaps come to 3070.8 of 3072 -- about one pixel of slack.
+// A third can never fit even partially, so "on-overflow" re-centres on every
+// focus change past two windows, leaving one column flanked by two
+// half-visible neighbours instead of a clean split.
+//
+// Position is left to niri too: it places a new output to the right of the
+// existing ones, and eDP-1 is pinned at x=0, so the laptop stays leftmost
+// whatever the external is called. That matters -- lan-mouse's capture
+// barrier lives on the leftmost output's left edge.
+
 layout {
     gaps 6
-    center-focused-column "on-overflow"
+    // "never" as the default; eDP-1 overrides it to "on-overflow" above.
+    center-focused-column "never"
 
     // Mod+R cycles these. The essential control on a 14-inch screen.
     preset-column-widths {
@@ -100,6 +114,23 @@ window-rule {
     default-column-width { proportion 0.45; }
 }
 
+// c3vox: float it and leave the size alone. Deliberately no
+// default-column-width/default-window-height -- niri's new_window_size()
+// resolves an unspecified dimension to 0, and a 0 in the configure hands the
+// choice back to the client, which is what makes SDL's 1280x720 stick.
+//
+// Matched on a prefix, because the app-id is whatever SDL_GetAppID last
+// resolved to and that has already moved once. The vendored libSDL3.a has no
+// wayland backend, so this runs through xwayland-satellite, which forwards
+// WM_CLASS res_class -- SDL fills res_name with the /proc/self/exe basename
+// ("vox-linux-debug") and res_class with SDL_GetAppID, i.e. the appidentifier
+// passed to set_app_metadata in src/platform/platform.c3 ("vox.c3l").
+// A prefix covers both spellings and survives the next rename.
+window-rule {
+    match app-id=r#"^vox"#
+    open-floating true
+}
+
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
@@ -121,6 +152,19 @@ binds {
     Mod+Shift+K { move-window-up; }
     Mod+Shift+L { move-column-right; }
 
+    // Send the focused window to another monitor. Chord is niri's upstream
+    // default; the action is not -- upstream binds move-column-to-monitor-*
+    // here and lists move-window-to-monitor-* as the commented alternative
+    // right below it. The window variant is the one that matches the rest of
+    // the Mod+Shift+<num> binds above: peel off one window, leave the column.
+    //
+    // Up/down do nothing while both outputs sit side by side, but they cost
+    // nothing and start working the moment the arrangement is stacked.
+    Mod+Shift+Ctrl+H { move-window-to-monitor-left; }
+    Mod+Shift+Ctrl+J { move-window-to-monitor-down; }
+    Mod+Shift+Ctrl+K { move-window-to-monitor-up; }
+    Mod+Shift+Ctrl+L { move-window-to-monitor-right; }
+
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
     Mod+3 { focus-workspace 3; }
@@ -137,6 +181,28 @@ binds {
     Mod+Ctrl+4 { move-column-to-workspace 4; }
     Mod+Ctrl+5 { move-column-to-workspace 5; }
 
+    // Throw the focused *window* to a workspace. These differ from the
+    // Mod+Ctrl binds above in more than the chord: move-window-to-workspace
+    // takes a single window out of its column, where move-column-to-workspace
+    // takes the whole column with it. On a stacked column that is the
+    // difference between peeling one window off and moving all of them.
+    //
+    // 0 maps to workspace 10 -- niri indices are 1-based and the number row
+    // reads 1..9 then 0, the same mapping i3 used.
+    //
+    // Focus follows the window (niri's default). Append `focus=false` to any
+    // of these to stay put instead, which is what i3's `move container` did.
+    Mod+Shift+1 { move-window-to-workspace 1; }
+    Mod+Shift+2 { move-window-to-workspace 2; }
+    Mod+Shift+3 { move-window-to-workspace 3; }
+    Mod+Shift+4 { move-window-to-workspace 4; }
+    Mod+Shift+5 { move-window-to-workspace 5; }
+    Mod+Shift+6 { move-window-to-workspace 6; }
+    Mod+Shift+7 { move-window-to-workspace 7; }
+    Mod+Shift+8 { move-window-to-workspace 8; }
+    Mod+Shift+9 { move-window-to-workspace 9; }
+    Mod+Shift+0 { move-window-to-workspace 10; }
+
     // The three that matter on a small screen
     Mod+R       { switch-preset-column-width; }
     Mod+W       { toggle-column-tabbed-display; }
@@ -147,6 +213,26 @@ binds {
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     Mod+Ctrl+F  { expand-column-to-available-width; }
+
+    // Dual-purpose: on a floating window this centers it in the working
+    // area (below waybar, not behind it); on a tiled one it centers the
+    // column in the viewport. Needed mainly because Mod+V on a tiled
+    // window drops it near where it already was rather than centered --
+    // only genuinely-new floating windows open centered.
+    Mod+Shift+C { center-window; }
+
+    // Fine-grained resize, 10% per press. Upstream's chords, not the
+    // Mod+Ctrl+Shift+hjkl set that would read naturally next to the
+    // movement binds -- that combination is already spoken for by
+    // move-window-to-monitor-* above.
+    //
+    // set-window-width rather than set-column-width so these stay
+    // dual-purpose like Mod+Shift+C: on a floating window they resize the
+    // window, on a tiled one they fall through to the column's width.
+    Mod+Minus       { set-window-width "-10%"; }
+    Mod+Equal       { set-window-width "+10%"; }
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
 
     Mod+Comma  { consume-window-into-column; }
     Mod+Period { expel-window-from-column; }
