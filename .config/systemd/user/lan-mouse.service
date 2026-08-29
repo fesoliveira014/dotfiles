@@ -1,0 +1,18 @@
+[Unit]
+Description=Lan Mouse - keyboard and mouse sharing over the LAN
+Documentation=https://github.com/feschber/lan-mouse
+# Needs a compositor: the layer-shell capture surfaces and the virtual
+# pointer/keyboard globals only exist once niri is up.
+After=graphical-session.target
+BindsTo=graphical-session.target
+
+[Service]
+# Absolute path deliberately. The systemd user manager's PATH omits
+# ~/.local/bin, so a bare `lan-mouse` here fails with status=203/EXEC.
+ExecStart=%h/.local/bin/lan-mouse daemon
+Restart=on-failure
+RestartSec=2
+Environment=LAN_MOUSE_LOG_LEVEL=info
+
+[Install]
+WantedBy=graphical-session.target
