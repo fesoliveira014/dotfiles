@@ -30,6 +30,28 @@ window#waybar {
 
 #tray              { padding: 0 8px; }
 
+/* AI subscription quota. Same reasoning as the telemetry below: the glyph
+   stays dim and the value, coloured inline by the script, only warms up as
+   quota drains. A struck-through value means a hard limit is empty. */
+#custom-ai-claude,
+#custom-ai-codex,
+#custom-ai-deepseek { padding: 0 8px; color: #8A9199; }
+
+#custom-ai-claude.missing,
+#custom-ai-codex.missing,
+#custom-ai-deepseek.missing,
+#custom-ai-claude.stale,
+#custom-ai-codex.stale,
+#custom-ai-deepseek.stale { color: #757C87; }
+
+#custom-ai-claude.exhausted,
+#custom-ai-codex.exhausted,
+#custom-ai-deepseek.exhausted {
+  text-decoration-line: line-through;
+  text-decoration-style: double;
+  text-decoration-color: #E6B450;
+}
+
 /* Telemetry sits dimmer than the interactive modules: it is there to be
    glanced at, not read, and only earns colour when something is wrong. */
 #cpu,

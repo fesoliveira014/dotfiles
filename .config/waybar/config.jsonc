@@ -6,7 +6,8 @@
 
   "modules-left":   ["custom/workspaces", "custom/window"],
   "modules-center": ["clock"],
-  "modules-right":  ["cpu", "temperature", "custom/powerprofile", "custom/dnd",
+  "modules-right":  ["custom/ai-claude", "custom/ai-codex", "custom/ai-deepseek",
+                     "cpu", "temperature", "custom/powerprofile", "custom/dnd",
                      "idle_inhibitor", "tray", "backlight", "wireplumber",
                      "network", "battery"],
 
@@ -77,6 +78,40 @@
     "return-type": "json",
     "interval": 5,
     "on-click": "/home/fesoliveira/.local/bin/waybar-powerprofile next"
+  },
+
+  // AI subscription quota. One shared 5-minute fetch backs all three
+  // modules; hover for the per-window breakdown plus tokens and what they
+  // would have cost at list API prices. Left-click opens the full ccusage
+  // report the same way cpu opens btop; right-click forces a refetch.
+  // Other providers the script supports (grok, gemini, zai, openrouter)
+  // are omitted here because they have no credentials on this machine.
+  "custom/ai-claude": {
+    "exec": "/home/fesoliveira/.local/bin/waybar-ai-usage claude",
+    "return-type": "json",
+    "interval": 300,
+    "signal": 8,
+    "on-click": "/home/fesoliveira/.local/bin/alacritty -e bash -c 'npx --yes ccusage@latest daily --breakdown; read -n1 -r -p \"\npress any key\"'",
+    "on-click-right": "rm -f ~/.cache/waybar-ai-usage/state.json; pkill -RTMIN+8 waybar"
+  },
+
+  "custom/ai-codex": {
+    "exec": "/home/fesoliveira/.local/bin/waybar-ai-usage codex",
+    "return-type": "json",
+    "interval": 300,
+    "signal": 8,
+    "on-click": "/home/fesoliveira/.local/bin/alacritty -e bash -c 'npx --yes ccusage@latest codex daily --breakdown; read -n1 -r -p \"\npress any key\"'",
+    "on-click-right": "rm -f ~/.cache/waybar-ai-usage/state.json; pkill -RTMIN+8 waybar"
+  },
+
+  // DeepSeek is prepaid credit, not a rate-limit window, so the value is a
+  // balance and there is no ccusage report behind it.
+  "custom/ai-deepseek": {
+    "exec": "/home/fesoliveira/.local/bin/waybar-ai-usage deepseek",
+    "return-type": "json",
+    "interval": 300,
+    "signal": 8,
+    "on-click": "rm -f ~/.cache/waybar-ai-usage/state.json; pkill -RTMIN+8 waybar"
   },
 
   "custom/dnd": {
